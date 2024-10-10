@@ -22,7 +22,10 @@ interface SubDistrict {
 }
 
 function page() {
-    const currentDate = new Date().toISOString();
+    const [status_form, set_Status_form] = useState({
+        shop: true,
+        owner: false,
+    })
 
     const [warning, set_Warning] = useState({
         //* shop
@@ -37,24 +40,19 @@ function page() {
         password: false,
         first_name: false,
         last_name: false,
-        shopID: false
     })
 
     const [provinces, set_Provinces] = useState<Province[]>([]);
     const [districts, set_Districts] = useState<District[]>([]);
     const [subdistricts, set_SubDistricts] = useState<SubDistrict[]>([]);
 
-    // const [shopID, set_ShopID] = useState<Number>(0);
+    const [shop_code, set_Shop_code] = useState<String>('');
     const [register_shop, set_Register_shop] = useState({
         ShopName: '',
         ShopAddress: '',
         ProvinceID: 0,
         DistrictID: 0,
         SubDistrictID: 0,
-
-        // RecordStatus: 'N',
-        // CreateDate: currentDate,
-        // CreateUser: 'Latte',
 
     });
 
@@ -63,11 +61,6 @@ function page() {
         OwnerPassword: '',
         OwnerFirstname: '',
         OwnerLastname: '',
-        ShopID: 0,
-
-        // RecordStatus: 'N',
-        // CreateDate: currentDate,
-        // CreateUser: 'Latte'
 
     });
 
@@ -109,9 +102,104 @@ function page() {
         // *Clear data
         set_Register_shop((selectValue) => ({ ...selectValue, SubDistrictID: 0 }))
     }
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    //     e.preventDefault();
+    //     //TODO: Check field "register_shop_form" and "register_owner_form" before send to api
+
+    //     // let status_check: number;
+    //     // status_check = 0;
+
+    //     // Object.values(register_shop).forEach((value, key) => {
+    //     //     const field = Object.keys(warning)[key]
+
+    //     //     if (value == 0 || value == '' || value == null) {
+    //     //         set_Warning((selectValue) => ({ ...selectValue, [field]: true }));
+
+    //     //     } else {
+    //     //         status_check++;
+    //     //         set_Warning((selectValue) => ({ ...selectValue, [field]: false }));
+    //     //     }
+    //     // });
+
+    //     // Object.values(register_owner).forEach((value, key) => {
+    //     //     const field = Object.keys(warning)[key + 5]
+
+    //     //     if (value == '' || value == null) {
+    //     //         set_Warning((selectValue) => ({ ...selectValue, [field]: true }));
+
+    //     //     } else {
+    //     //         status_check++;
+    //     //         set_Warning((selectValue) => ({ ...selectValue, [field]: false }));
+    //     //     }
+    //     // })
+
+    //     if (status_check == 9 || status_check == 10) {
+    //         if (register_owner.ShopID == 0) {
+    //             // //* send body shop to api for register shop.
+    //             // const res_shop = await fetch(`http://localhost:3000/register/shop`, {
+    //             //     method: 'POST',
+    //             //     headers: { 'Content-type': 'application/json' },
+    //             //     body: JSON.stringify(register_shop)
+    //             // });
+
+    //             // const req_shop = await res_shop.json();
+
+    //             // //* if register body shop success to change ShopID in register_owner follow field body in req_shop
+    //             // set_Register_owner((selectValue) => ({ ...selectValue, ShopID: req_shop.ShopID }));
+
+    //             // alert('Register shop success')
+
+    //             //* send body owner to api for register owner
+    //             const res_owner = await fetch(`http://localhost:3000/register/owner`, {
+    //                 method: 'POST',
+    //                 headers: { 'Content-type': 'application/json' },
+    //                 body: JSON.stringify(register_owner)
+    //             });
+
+    //             const req_owner = await res_owner.json();
+
+    //             if (req_owner.username_status) {
+    //                 //* register success
+    //                 alert(req_owner.description);
+
+    //             } else {
+    //                 //* register not success
+    //                 //* show alert message "Duplicate username, Please fill in again."
+    //                 alert(req_owner.description);
+
+    //             };
+
+    //         } else {
+    //             //* send body owner to api for register owner
+    //             const res_owner = await fetch(`http://localhost:3000/register/owner`, {
+    //                 method: 'POST',
+    //                 headers: { 'Content-type': 'application/json' },
+    //                 body: JSON.stringify(register_owner)
+    //             });
+
+    //             const req_owner = await res_owner.json();
+
+    //             if (req_owner.username_status) {
+    //                 //* register success
+    //                 alert(req_owner.description);
+
+    //             } else {
+    //                 //* register not success
+    //                 //* show alert message "Duplicate username, Please fill in again."
+    //                 alert(req_owner.description);
+
+    //             };
+
+    //         }
+
+    //     } else {
+    //         // alert()
+    //     }
+
+    // }
+
+    const submit_shop = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        //TODO: Check field "register_shop_form" and "register_owner_form" before send to api
 
         let status_check: number;
         status_check = 0;
@@ -128,6 +216,30 @@ function page() {
             }
         });
 
+        if (status_check == 5) {
+            //* send body shop to api for register shop.
+            const res_shop = await fetch(`http://localhost:3000/register/shop`, {
+                method: 'POST',
+                headers: { 'Content-type': 'application/json' },
+                body: JSON.stringify(register_shop)
+            });
+
+            const req_shop = await res_shop.json();
+
+            set_Shop_code(req_shop.ShopCode)
+            set_Status_form((value) => ({ ...value, shop: false, owner: true }))
+
+        } else {
+            alert('please, check your form register shop')
+        }
+    }
+
+    const submit_owner = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault();
+
+        let status_check: number;
+        status_check = 0;
+
         Object.values(register_owner).forEach((value, key) => {
             const field = Object.keys(warning)[key + 5]
 
@@ -140,134 +252,116 @@ function page() {
             }
         })
 
-        if (status_check == 9 || status_check == 10) {
-            if (register_owner.ShopID == 0) {
-                const res_shop = await fetch(`http://localhost:3000/register/shop`, {
-                    method: 'POST',
-                    headers: { 'Content-type': 'application/json' },
-                    body: JSON.stringify(register_shop)
-                });
+        if (status_check == 4) {
+            //* send body owner to api for register owner
+            const res_owner = await fetch(`http://localhost:3000/register/owner?Shop_code=${shop_code}`, {
+                method: 'POST',
+                headers: { 'Content-type': 'application/json' },
+                body: JSON.stringify(register_owner)
+            });
 
-                const req_shop = await res_shop.json();
+            const req_owner = await res_owner.json();
 
-                set_Register_owner((selectValue) => ({ ...selectValue, ShopID: req_shop.ShopID }));
-
-                const res_owner = await fetch(`http://localhost:3000/register/owner`, {
-                    method: 'POST',
-                    headers: { 'Content-type': 'application/json' },
-                    body: JSON.stringify(register_owner)
-                });
-
-                const req_owner = await res_owner.json();
-
-                if (req_owner.username_status) {
-                    alert(req_owner.description);
-
-                } else {
-                    alert(req_owner.description);
-
-                };
+            if (req_owner.username_status) {
+                //* register success
+                alert(req_owner.description);
 
             } else {
-                const res_owner = await fetch(`http://localhost:3000/register/owner`, {
-                    method: 'POST',
-                    headers: { 'Content-type': 'application/json' },
-                    body: JSON.stringify(register_owner)
-                });
+                //* register not success
+                //* show alert message "Duplicate username, Please fill in again."
+                alert(req_owner.description);
 
-                const req_owner = await res_owner.json();
-
-                if (req_owner.username_status) {
-                    alert(req_owner.description);
-
-                } else {
-                    alert(req_owner.description);
-
-                };
-
-            }
+            };
 
         } else {
-            // alert()
+            alert('please, check your form register owner')
         }
-
     }
 
     return (
         <div>
-            <form onSubmit={handleSubmit}>
+            {status_form.shop &&
+                <form onSubmit={submit_shop}>
+                    <h2>Shop</h2>
+                    <label htmlFor="Shop_name">Shop name :</label>
+                    <input
+                        type="text"
+                        id='Shop_name'
+                        onChange={(e) => set_Register_shop((selectValue) => ({ ...selectValue, ShopName: e.target.value }))}
+                    /><br />
 
-                <h2>Shop</h2>
-                <label htmlFor="Shop_name">Shop name :</label>
-                <input
-                    type="text"
-                    id='Shop_name'
-                    onChange={(e) => set_Register_shop((selectValue) => ({ ...selectValue, ShopName: e.target.value }))}
-                /><br />
+                    <label htmlFor="Address">Address :</label>
+                    <input
+                        type="text"
+                        id='Address'
+                        onChange={(e) => set_Register_shop((selectValue) => ({ ...selectValue, ShopAddress: e.target.value }))}
+                    /><br />
 
-                <label htmlFor="Address">Address :</label>
-                <input
-                    type="text"
-                    id='Address'
-                    onChange={(e) => set_Register_shop((selectValue) => ({ ...selectValue, ShopAddress: e.target.value }))}
-                /><br />
+                    <label htmlFor="Province">Province :</label>
+                    <select name="" id="Province" onChange={Select_district}>
+                        <option></option>
+                        {provinces.map((province) => (
+                            <option key={province.ProvinceID} value={province.ProvinceID}>{province.ProvinceNameTh}</option>
+                        ))}
+                    </select><br />
 
-                <label htmlFor="Province">Province :</label>
-                <select name="" id="Province" onChange={Select_district}>
-                    <option></option>
-                    {provinces.map((province) => (
-                        <option key={province.ProvinceID} value={province.ProvinceID}>{province.ProvinceNameTh}</option>
-                    ))}
-                </select><br />
+                    <label htmlFor="District">District :</label>
+                    <select name="" id="District" onChange={Select_subdistrict}>
+                        <option></option>
+                        {districts.map((district) => (
+                            <option key={district.DistrictID} value={district.DistrictID}>{district.DistrictNameTh}</option>
+                        ))}
+                    </select><br />
 
-                <label htmlFor="District">District :</label>
-                <select name="" id="District" onChange={Select_subdistrict}>
-                    <option></option>
-                    {districts.map((district) => (
-                        <option key={district.DistrictID} value={district.DistrictID}>{district.DistrictNameTh}</option>
-                    ))}
-                </select><br />
+                    <label htmlFor="SubDistrict">SubDistrict :</label>
+                    <select name="" id="SubDistrict" onChange={(e) => set_Register_shop((selectValue) => ({ ...selectValue, SubDistrictID: Number(e.target.value) }))}>
+                        <option></option>
+                        {subdistricts.map((subdistrict) => (
+                            <option key={subdistrict.SubDistrictID} value={subdistrict.SubDistrictID}>{subdistrict.SubDistrictNameTh}</option>
+                        ))}
+                    </select><br />
 
-                <label htmlFor="SubDistrict">SubDistrict :</label>
-                <select name="" id="SubDistrict" onChange={(e) => set_Register_shop((selectValue) => ({ ...selectValue, SubDistrictID: Number(e.target.value) }))}>
-                    <option></option>
-                    {subdistricts.map((subdistrict) => (
-                        <option key={subdistrict.SubDistrictID} value={subdistrict.SubDistrictID}>{subdistrict.SubDistrictNameTh}</option>
-                    ))}
-                </select><br />
-                {warning.shop_name && <h2>2222</h2>}
+                    <input type='submit' />
+                </form>
+            }
 
-                <h2>Owner</h2>
-                <label htmlFor="Fristname">Frist name</label>
-                <input
-                    type="text"
-                    id="Fristname"
-                    onChange={(e) => set_Register_owner((selectValue) => ({ ...selectValue, OwnerFirstname: e.target.value }))}
-                /><br />
+            {status_form.owner &&
+                <form onSubmit={submit_owner}>
+                    <h2>Owner</h2>
+                    <label htmlFor="Shop_code">Shop code</label>
+                    <input type="text" value={`${shop_code}`} readOnly /><br />
 
-                <label htmlFor="Lastname">Last name</label>
-                <input
-                    type="text"
-                    id="Lastname"
-                    onChange={(e) => set_Register_owner((selectValue) => ({ ...selectValue, OwnerLastname: e.target.value }))}
-                /><br />
+                    <label htmlFor="First_name">First name</label>
+                    <input
+                        type="text"
+                        id="First_name"
+                        onChange={(e) => set_Register_owner((selectValue) => ({ ...selectValue, OwnerFirstname: e.target.value }))}
+                    /><br />
 
-                <label htmlFor="Username">Username</label>
-                <input
-                    type="text"
-                    id="Username"
-                    onChange={(e) => set_Register_owner((selectValue) => ({ ...selectValue, OwnerUsername: e.target.value }))}
-                /><br />
+                    <label htmlFor="Last_name">Last name</label>
+                    <input
+                        type="text"
+                        id="Last_name"
+                        onChange={(e) => set_Register_owner((selectValue) => ({ ...selectValue, OwnerLastname: e.target.value }))}
+                    /><br />
 
-                <label htmlFor="Password">Password</label>
-                <input
-                    type="password"
-                    id="Password"
-                    onChange={(e) => set_Register_owner((selectValue) => ({ ...selectValue, OwnerPassword: e.target.value }))}
-                /><br />
+                    <label htmlFor="Username">Username</label>
+                    <input
+                        type="text"
+                        id="Username"
+                        onChange={(e) => set_Register_owner((selectValue) => ({ ...selectValue, OwnerUsername: e.target.value }))}
+                    /><br />
 
-                <input type='submit' />
-            </form>
+                    <label htmlFor="Password">Password</label>
+                    <input
+                        type="password"
+                        id="Password"
+                        onChange={(e) => set_Register_owner((selectValue) => ({ ...selectValue, OwnerPassword: e.target.value }))}
+                    /><br />
+
+                    <input type='submit' />
+                </form>
+            }
         </div>
     )
 }
