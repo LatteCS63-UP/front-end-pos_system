@@ -59,8 +59,8 @@ function page() {
     const [register_owner, set_Register_owner] = useState({
         OwnerUsername: '',
         OwnerPassword: '',
-        OwnerFirstname: '',
-        OwnerLastname: '',
+        OwnerFirst_name: '',
+        OwnerLast_name: '',
 
     });
 
@@ -240,14 +240,14 @@ function page() {
                     <input
                         type="text"
                         id="First_name"
-                        onChange={(e) => set_Register_owner((selectValue) => ({ ...selectValue, OwnerFirstname: e.target.value }))}
+                        onChange={(e) => set_Register_owner((selectValue) => ({ ...selectValue, OwnerFirst_name: e.target.value }))}
                     /><br />
 
                     <label htmlFor="Last_name">Last name</label>
                     <input
                         type="text"
                         id="Last_name"
-                        onChange={(e) => set_Register_owner((selectValue) => ({ ...selectValue, OwnerLastname: e.target.value }))}
+                        onChange={(e) => set_Register_owner((selectValue) => ({ ...selectValue, OwnerLast_name: e.target.value }))}
                     /><br />
 
                     <label htmlFor="Username">Username</label>
