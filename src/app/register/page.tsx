@@ -48,8 +48,8 @@ function page() {
 
     const [shop_code, set_Shop_code] = useState<String>('');
     const [register_shop, set_Register_shop] = useState({
-        ShopName: '',
-        ShopAddress: '',
+        Shop_name: '',
+        Shop_address: '',
         ProvinceID: 0,
         DistrictID: 0,
         SubDistrictID: 0,
@@ -57,10 +57,10 @@ function page() {
     });
 
     const [register_owner, set_Register_owner] = useState({
-        OwnerUsername: '',
-        OwnerPassword: '',
-        OwnerFirst_name: '',
-        OwnerLast_name: '',
+        Owner_username: '',
+        Owner_password: '',
+        Owner_first_name: '',
+        Owner_last_name: '',
 
     });
 
@@ -131,7 +131,7 @@ function page() {
 
             const req_shop = await res_shop.json();
 
-            set_Shop_code(req_shop.ShopCode)
+            set_Shop_code(req_shop.Shop_code)
             set_Status_form((value) => ({ ...value, shop: false, owner: true }))
 
         } else {
@@ -192,14 +192,14 @@ function page() {
                     <input
                         type="text"
                         id='Shop_name'
-                        onChange={(e) => set_Register_shop((selectValue) => ({ ...selectValue, ShopName: e.target.value }))}
+                        onChange={(e) => set_Register_shop((selectValue) => ({ ...selectValue, Shop_name: e.target.value }))}
                     /><br />
 
                     <label htmlFor="Address">Address :</label>
                     <input
                         type="text"
                         id='Address'
-                        onChange={(e) => set_Register_shop((selectValue) => ({ ...selectValue, ShopAddress: e.target.value }))}
+                        onChange={(e) => set_Register_shop((selectValue) => ({ ...selectValue, Shop_address: e.target.value }))}
                     /><br />
 
                     <label htmlFor="Province">Province :</label>
@@ -240,28 +240,28 @@ function page() {
                     <input
                         type="text"
                         id="First_name"
-                        onChange={(e) => set_Register_owner((selectValue) => ({ ...selectValue, OwnerFirst_name: e.target.value }))}
+                        onChange={(e) => set_Register_owner((selectValue) => ({ ...selectValue, Owner_first_name: e.target.value }))}
                     /><br />
 
                     <label htmlFor="Last_name">Last name</label>
                     <input
                         type="text"
                         id="Last_name"
-                        onChange={(e) => set_Register_owner((selectValue) => ({ ...selectValue, OwnerLast_name: e.target.value }))}
+                        onChange={(e) => set_Register_owner((selectValue) => ({ ...selectValue, Owner_last_name: e.target.value }))}
                     /><br />
 
                     <label htmlFor="Username">Username</label>
                     <input
                         type="text"
                         id="Username"
-                        onChange={(e) => set_Register_owner((selectValue) => ({ ...selectValue, OwnerUsername: e.target.value }))}
+                        onChange={(e) => set_Register_owner((selectValue) => ({ ...selectValue, Owner_username: e.target.value }))}
                     /><br />
 
                     <label htmlFor="Password">Password</label>
                     <input
                         type="password"
                         id="Password"
-                        onChange={(e) => set_Register_owner((selectValue) => ({ ...selectValue, OwnerPassword: e.target.value }))}
+                        onChange={(e) => set_Register_owner((selectValue) => ({ ...selectValue, Owner_password: e.target.value }))}
                     /><br />
 
                     <input type='submit' />

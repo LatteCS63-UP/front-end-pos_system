@@ -23,7 +23,7 @@ function page() {
 
     const router = useRouter()
     const searchParams = useSearchParams()
-    const callbackUrl = searchParams.get('callbackUrl') || '/home'
+    const callbackUrl = searchParams.get('callbackUrl') || '/system '
 
     const submit_signIn = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
@@ -111,9 +111,42 @@ function page() {
 
         }
     };
+
+
     return (
-        <div>
-            <h2>Sign-in</h2>
+        <>
+            <div className='container_1'>
+                <div className='container_2'>
+                    <form onSubmit={submit_signIn}>
+                        <h2>Sign in</h2>
+                        <p style={{ color: '#637381', fontSize: '14px' }}>Don't have an account? <a href="/register" style={{ color: "#1877F2", fontWeight: '600' }}>Get started</a></p>
+
+                        <div className='container_3'>
+                            <div className='input-box'>
+                                <input id='shop_code' type="text" ref={shop_code} className={`shop_code ${warning.shop_code ? 'active' : ''}`} />
+                                <label htmlFor="shop_code">Shop code</label>
+                            </div>
+
+                            <div className='input-box'>
+                                <input id='username' type="text" ref={username} className={`username ${warning.username ? 'active' : ''}`} />
+                                <label htmlFor="username">Username</label>
+                            </div>
+
+                            <div className='input-box'>
+                                <input id='password' type="password" ref={password} className={`password ${warning.password ? 'active' : ''}`} />
+                                <label htmlFor="password">Password</label>
+                            </div>
+
+                            <p><a href="#" style={{ color: "#1C252E" }}>For got password?</a></p>
+
+                            <div className='input-box'>
+                                <input type="submit" value='Sign in' style={{ fontWeight: "600", cursor: 'pointer' }} />
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+            {/* <h2>Sign-in</h2>
             <form onSubmit={submit_signIn}>
                 <label htmlFor="shop_code">Shop code</label>
                 <input
@@ -146,8 +179,8 @@ function page() {
                 {warning.password_text_warning_1 && <p>password incorrect.</p>}
 
                 <input type="submit" />
-            </form>
-        </div>
+            </form> */}
+        </>
     )
 }
 
