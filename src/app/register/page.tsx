@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from 'react'
+import './page.scss';
 
 interface Province {
     ProvinceID: number
@@ -47,6 +48,7 @@ function page() {
     const [subdistricts, set_SubDistricts] = useState<SubDistrict[]>([]);
 
     const [shop_code, set_Shop_code] = useState<String>('');
+    const [confirm_password, set_Confirm_password] = useState<String>('');
     const [register_shop, set_Register_shop] = useState({
         Shop_name: '',
         Shop_address: '',
@@ -73,15 +75,15 @@ function page() {
 
             // const res_job_title = await fetch(`http://localhost:3000/register/setting-code-shop`)
             // const job_title = await res_job_title.json();
-            // set_Register_shop((selectValue) => ({ ...selectValue, ShopCode: job_title.Code_of_shop }))
+            // set_Register_shop((value) => ({ ...value, ShopCode: job_title.Code_of_shop }))
 
         };
 
-        fetchData()
+        // fetchData()
     }, []);
 
     const Select_district = async (e: any) => {
-        set_Register_shop((selectValue) => ({ ...selectValue, ProvinceID: Number(e.target.value) }))
+        set_Register_shop((value) => ({ ...value, ProvinceID: Number(e.target.value) }))
 
         const res_district = await fetch(`http://localhost:3000/group/Province-District-SubDistrict?ProvinceID=${e.target.value}`)
         const req_district: District[] = await res_district.json();
@@ -89,18 +91,18 @@ function page() {
 
         // *Clear data
         set_SubDistricts([])
-        set_Register_shop((selectValue) => ({ ...selectValue, DistrictID: 0, SubDistrictID: 0 }))
+        set_Register_shop((value) => ({ ...value, DistrictID: 0, SubDistrictID: 0 }))
     }
 
     const Select_subdistrict = async (e: any) => {
-        set_Register_shop((selectValue) => ({ ...selectValue, DistrictID: Number(e.target.value) }))
+        set_Register_shop((value) => ({ ...value, DistrictID: Number(e.target.value) }))
 
         const res_subdistrict = await fetch(`http://localhost:3000/group/Province-District-SubDistrict?DistrictID=${e.target.value}`)
         const req_subdistrict: SubDistrict[] = await res_subdistrict.json();
         set_SubDistricts(req_subdistrict)
 
         // *Clear data
-        set_Register_shop((selectValue) => ({ ...selectValue, SubDistrictID: 0 }))
+        set_Register_shop((value) => ({ ...value, SubDistrictID: 0 }))
     }
 
     const submit_shop = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -113,11 +115,11 @@ function page() {
             const field = Object.keys(warning)[key]
 
             if (value == 0 || value == '' || value == null) {
-                set_Warning((selectValue) => ({ ...selectValue, [field]: true }));
+                set_Warning((value) => ({ ...value, [field]: true }));
 
             } else {
                 status_check++;
-                set_Warning((selectValue) => ({ ...selectValue, [field]: false }));
+                set_Warning((value) => ({ ...value, [field]: false }));
             }
         });
 
@@ -142,132 +144,187 @@ function page() {
     const submit_owner = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        let status_check: number;
-        status_check = 0;
-
-        Object.values(register_owner).forEach((value, key) => {
-            const field = Object.keys(warning)[key + 5]
-
-            if (value == '' || value == null) {
-                set_Warning((selectValue) => ({ ...selectValue, [field]: true }));
-
-            } else {
-                status_check++;
-                set_Warning((selectValue) => ({ ...selectValue, [field]: false }));
-            }
-        })
-
-        if (status_check == 4) {
-            //* send body owner to api for register owner
-            const res_owner = await fetch(`http://localhost:3000/register/owner?Shop_code=${shop_code}`, {
-                method: 'POST',
-                headers: { 'Content-type': 'application/json' },
-                body: JSON.stringify(register_owner)
-            });
-
-            const req_owner = await res_owner.json();
-
-            if (req_owner.username_status) {
-                //* register success
-                alert(req_owner.description);
-
-            } else {
-                //* register not success
-                //* show alert message "Duplicate username, Please fill in again."
-                alert(req_owner.description);
-
-            };
+        if (confirm_password != register_owner.Owner_username) {
 
         } else {
-            alert('please, check your form register owner')
+            let status_check: number;
+            status_check = 0;
+
+            Object.values(register_owner).forEach((value, key) => {
+                const field = Object.keys(warning)[key + 5]
+
+                if (value == '' || value == null) {
+                    set_Warning((value) => ({ ...value, [field]: true }));
+
+                } else {
+                    status_check++;
+                    set_Warning((value) => ({ ...value, [field]: false }));
+                }
+            })
+
+            if (status_check == 4) {
+                //* send body owner to api for register owner
+                const res_owner = await fetch(`http://localhost:3000/register/owner?Shop_code=${shop_code}`, {
+                    method: 'POST',
+                    headers: { 'Content-type': 'application/json' },
+                    body: JSON.stringify(register_owner)
+                });
+
+                const req_owner = await res_owner.json();
+
+                if (req_owner.username_status) {
+                    //* register success
+                    alert(req_owner.description);
+
+                } else {
+                    //* register not success
+                    //* show alert message "Duplicate username, Please fill in again."
+                    alert(req_owner.description);
+
+                };
+
+            } else {
+                alert('please, check your form register owner')
+            }
         }
     }
 
     return (
-        <div>
-            {status_form.shop &&
-                <form onSubmit={submit_shop}>
-                    <h2>Shop</h2>
-                    <label htmlFor="Shop_name">Shop name :</label>
-                    <input
-                        type="text"
-                        id='Shop_name'
-                        onChange={(e) => set_Register_shop((selectValue) => ({ ...selectValue, Shop_name: e.target.value }))}
-                    /><br />
+        <>
+            <div className='container_1'>
+                <div className='container_2'>
+                    <h2>Register</h2>
+                    <div className='container_3'>
+                        <div className='form'>
+                            <div className='step-header'>
+                                <p>
+                                    <span style={{ paddingRight: "1rem", fontWeight: "800", fontSize: "18px" }}>Step 1</span>
+                                    <span style={{ fontSize: "16px", color: "#637381" }}>Register shop</span>
+                                </p>
+                                <div className={`status-shop-form ${status_form.shop ? "" : "active"}`}></div>
+                            </div>
 
-                    <label htmlFor="Address">Address :</label>
-                    <input
-                        type="text"
-                        id='Address'
-                        onChange={(e) => set_Register_shop((selectValue) => ({ ...selectValue, Shop_address: e.target.value }))}
-                    /><br />
+                            {status_form.shop &&
+                                <form onSubmit={submit_shop} style={{ width: "100%" }}>
+                                    <div className='input-box'>
+                                        <input type="text" id='shop_name'
+                                            onChange={(e) => set_Register_shop((value) => ({ ...value, Shop_name: e.target.value }))}
+                                        />
+                                        <label htmlFor="shop_name">Shop name</label>
+                                    </div>
 
-                    <label htmlFor="Province">Province :</label>
-                    <select name="" id="Province" onChange={Select_district}>
-                        <option></option>
-                        {provinces.map((province) => (
-                            <option key={province.ProvinceID} value={province.ProvinceID}>{province.ProvinceNameTh}</option>
-                        ))}
-                    </select><br />
+                                    <div className='input-box'>
+                                        <select name="" id="province"
+                                            onChange={Select_district}
+                                        >
+                                            <option></option>
+                                            {provinces.map((province) => (
+                                                <option key={province.ProvinceID} value={province.ProvinceID}>{province.ProvinceNameTh}</option>
+                                            ))}
+                                        </select>
+                                        <label htmlFor="province">Province</label>
+                                    </div>
 
-                    <label htmlFor="District">District :</label>
-                    <select name="" id="District" onChange={Select_subdistrict}>
-                        <option></option>
-                        {districts.map((district) => (
-                            <option key={district.DistrictID} value={district.DistrictID}>{district.DistrictNameTh}</option>
-                        ))}
-                    </select><br />
+                                    <div className='input-box'>
+                                        <select name="" id="district"
+                                            onChange={Select_subdistrict}
+                                        >
+                                            <option></option>
+                                            {districts.map((district) => (
+                                                <option key={district.DistrictID} value={district.DistrictID}>{district.DistrictNameTh}</option>
+                                            ))}
+                                        </select>
+                                        <label htmlFor="district">District</label>
+                                    </div>
 
-                    <label htmlFor="SubDistrict">SubDistrict :</label>
-                    <select name="" id="SubDistrict" onChange={(e) => set_Register_shop((selectValue) => ({ ...selectValue, SubDistrictID: Number(e.target.value) }))}>
-                        <option></option>
-                        {subdistricts.map((subdistrict) => (
-                            <option key={subdistrict.SubDistrictID} value={subdistrict.SubDistrictID}>{subdistrict.SubDistrictNameTh}</option>
-                        ))}
-                    </select><br />
+                                    <div className='input-box'>
+                                        <select name="" id="sub_district"
+                                            onChange={(e) => set_Register_shop((value) => ({ ...value, SubDistrictID: Number(e.target.value) }))}
+                                        >
+                                            <option></option>
+                                            {subdistricts.map((subdistrict) => (
+                                                <option key={subdistrict.SubDistrictID} value={subdistrict.SubDistrictID}>{subdistrict.SubDistrictNameTh}</option>
+                                            ))}
+                                        </select>
+                                        <label htmlFor="sub_district">Sub district</label>
+                                    </div>
 
-                    <input type='submit' />
-                </form>
-            }
+                                    <div className='input-box'>
+                                        <input type="text" id='address'
+                                            onChange={(e) => set_Register_shop((value) => ({ ...value, Shop_address: e.target.value }))}
+                                        />
+                                        <label htmlFor="address">Address</label>
+                                    </div>
 
-            {status_form.owner &&
-                <form onSubmit={submit_owner}>
-                    <h2>Owner</h2>
-                    <label htmlFor="Shop_code">Shop code</label>
-                    <input type="text" value={`${shop_code}`} readOnly /><br />
+                                    <div className='input-box' style={{ marginBottom: '0' }}>
+                                        <input type="submit" value="Next step" style={{ fontWeight: "600", cursor: 'pointer' }} />
+                                    </div>
+                                </form>
+                            }
 
-                    <label htmlFor="First_name">First name</label>
-                    <input
-                        type="text"
-                        id="First_name"
-                        onChange={(e) => set_Register_owner((selectValue) => ({ ...selectValue, Owner_first_name: e.target.value }))}
-                    /><br />
+                        </div>
+                        <hr />
+                        <div className='form'>
+                            <div className='step-header'>
+                                <p>
+                                    <span style={{ paddingRight: "1rem", fontWeight: "800", fontSize: "18px" }}>Step 2</span>
+                                    <span style={{ fontSize: "16px", color: "#637381" }}>Register owner</span>
+                                </p>
+                                <div className={`status-owner-form ${status_form.owner ? "" : "active"}`}></div>
+                            </div>
 
-                    <label htmlFor="Last_name">Last name</label>
-                    <input
-                        type="text"
-                        id="Last_name"
-                        onChange={(e) => set_Register_owner((selectValue) => ({ ...selectValue, Owner_last_name: e.target.value }))}
-                    /><br />
+                            {status_form.owner &&
+                                <form onSubmit={submit_owner} style={{ width: "100%" }}>
+                                    <div className='input-box'>
+                                        <input type="text" value={`${shop_code}`} id='shop_code' />
+                                        <label htmlFor="shop_code">Shop code</label>
+                                    </div>
 
-                    <label htmlFor="Username">Username</label>
-                    <input
-                        type="text"
-                        id="Username"
-                        onChange={(e) => set_Register_owner((selectValue) => ({ ...selectValue, Owner_username: e.target.value }))}
-                    /><br />
+                                    <div className='input-box'>
+                                        <input type="text" id='first_name'
+                                            onChange={(e) => set_Register_owner((value) => ({ ...value, Owner_first_name: e.target.value }))}
+                                        />
+                                        <label htmlFor="first_name">First name</label>
+                                    </div>
 
-                    <label htmlFor="Password">Password</label>
-                    <input
-                        type="password"
-                        id="Password"
-                        onChange={(e) => set_Register_owner((selectValue) => ({ ...selectValue, Owner_password: e.target.value }))}
-                    /><br />
+                                    <div className='input-box'>
+                                        <input type="text" id='last_name'
+                                            onChange={(e) => set_Register_owner((value) => ({ ...value, Owner_last_name: e.target.value }))}
+                                        />
+                                        <label htmlFor="last_name">Last name</label>
+                                    </div>
 
-                    <input type='submit' />
-                </form>
-            }
-        </div>
+                                    <div className='input-box'>
+                                        <input type="text" id='username'
+                                            onChange={(e) => set_Register_owner((value) => ({ ...value, Owner_username: e.target.value }))}
+                                        />
+                                        <label htmlFor="username">Username</label>
+                                    </div>
+
+                                    <div className='input-box'>
+                                        <input type="password" id='password'
+                                            onChange={(e) => set_Register_owner((value) => ({ ...value, Owner_password: e.target.value }))}
+                                        />
+                                        <label htmlFor="password">Password</label>
+                                    </div>
+
+                                    <div className='input-box'>
+                                        <input type="password" id='confirm_password'
+                                            onChange={(e) => set_Confirm_password(e.target.value)}
+                                        />
+                                        <label htmlFor="confirm_password">Confirm Password</label>
+                                    </div>
+
+                                    <div className='input-box' style={{ marginBottom: '0' }}>
+                                        <input type="submit" style={{ fontWeight: "600", cursor: 'pointer' }} />
+                                    </div>
+                                </form>
+                            }
+                        </div>
+                    </div>
+                </div >
+            </div >
+        </>
     )
 }
 

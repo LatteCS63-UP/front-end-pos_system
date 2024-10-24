@@ -1,0 +1,142 @@
+.container_1 {
+    width: 100%;
+    height: 100vh;
+
+    background-color: #E3EDEF;
+
+    padding: 1rem;
+    box-sizing: border-box;
+    
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+}
+
+.container_2 {
+    width: 400px;
+
+    text-align: center;
+
+    background-color: white;
+
+    padding: 40px 24px;
+    border-radius: 16px;
+}
+
+.container_3 {
+
+    margin: 2.5rem 0 0 0;
+
+    hr {
+        border: none;
+        height: 1px;
+        background-color: gray;
+
+        margin: 1rem 0;
+    }
+
+    .form {
+        // display: flex;
+        // flex-direction: column;
+        // align-items: start;
+
+        // margin: 2.5rem 0 0 0;
+
+        .step-header {
+            display: flex;
+            justify-content: space-between;
+
+            // #FD6262
+            // #F8A01E
+            // #64D579
+
+            .status-shop-form,
+            .status-owner-form {
+                width: 20px;
+                height: 20px;
+
+                border: 2px solid;
+                border-radius: 44% 56% 48% 52% / 55% 40% 60% 45% ;
+            }
+
+            .status-shop-form,
+            .status-owner-form {
+                border-color: #F8A01E;
+            }
+
+            .status-shop-form.active {
+                border-color: #64D579;
+            }
+
+            .status-owner-form.active {
+                border-color: #FD6262;
+            }
+        }
+
+        .input-box {
+            position: relative;
+
+            width: 100%;
+
+            display: flex;
+
+            margin: 1.75rem 0;
+
+            label {
+                position: absolute;
+
+                font-size:  .75rem;
+
+                background-color: #F9FAFB;
+                color: #637381;
+
+                padding: 0 5px;
+
+                top: -9px;
+                left: 10px;
+            }
+
+            input,
+            select {
+                width: 100%;
+
+                font-size: 1rem;
+
+                padding: 16px 14px;
+
+                border: 1px solid #e4e8eb;
+                border-radius: 6px;
+
+                outline: none;
+
+                box-sizing: border-box;
+            }
+
+            input[type="submit"] {
+                background-color: #1C252E;
+                color: #FBFCFC;
+            }
+
+            input[type="text"]:hover,
+            input[type="password"]:hover,
+            select:hover {
+                border: 1px solid;
+
+                ~ label {
+                    color: black;
+                }
+            }
+
+            input[type="text"]:focus,
+            input[type="password"]:focus,
+            select:focus {
+                border: 2px solid #1877F2;
+
+                ~ label {
+                    color: #1877F2;
+                }
+            }
+        }
+    }
+}
