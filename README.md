@@ -22,13 +22,13 @@
 
 ![preview](public/picture/register-step_1.jpeg)
 
-> Register step 1 for register shop data
+> Register step 1 for register shop data.
 
 <!-- ## -------------------------------------------------------- -->
 
 ![preview](public/picture/rigister-step_2.jpeg)
 
-> Register step 2 for register owner shop
+> Register step 2 for register owner data.
 
 First, run the development server:
 
