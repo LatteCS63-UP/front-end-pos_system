@@ -2,6 +2,34 @@
 
 ![preview](public/picture/sign-in-page.jpeg)
 
+## Pages
+
+- [Home]()
+- [Sign in]()
+- [Register]()
+
+## Home
+
+![preview]()
+
+## Sign in
+
+![preview](public/picture/sign-in-page.jpeg)
+
+## Register
+
+<!-- ## -------------------------------------------------------- -->
+
+![preview](public/picture/register-step_1.jpeg)
+
+> Register step 1 for register shop data
+
+<!-- ## -------------------------------------------------------- -->
+
+![preview](public/picture/rigister-step_2.jpeg)
+
+> Register step 2 for register owner shop
+
 First, run the development server:
 
 ```bash
