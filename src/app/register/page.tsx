@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from 'react'
-import './page.scss';
+import { useRouter } from 'next/navigation';
 
 interface Province {
     ProvinceID: number
@@ -23,9 +23,14 @@ interface SubDistrict {
 }
 
 function page() {
+    const router = useRouter()
+
     const [status_form, set_Status_form] = useState({
         shop: true,
         owner: false,
+        owner2: false,
+
+        confirm_password: true
     })
 
     const [warning, set_Warning] = useState({
@@ -145,8 +150,11 @@ function page() {
         e.preventDefault();
 
         if (confirm_password != register_owner.Owner_username) {
+            set_Status_form((value) => ({ ...value, confirm_password: true }))
 
         } else {
+            set_Status_form((value) => ({ ...value, confirm_password: false }))
+
             let status_check: number;
             status_check = 0;
 
@@ -173,8 +181,12 @@ function page() {
                 const req_owner = await res_owner.json();
 
                 if (req_owner.username_status) {
+                    set_Status_form((value) => ({ ...value, owner: false, owner2: true }))
+                    await new Promise((resolve) => setTimeout(resolve, 3000))
+
                     //* register success
                     alert(req_owner.description);
+                    router.push("/sign-in")
 
                 } else {
                     //* register not success
@@ -191,30 +203,36 @@ function page() {
 
     return (
         <>
-            <div className='container_1'>
-                <div className='container_2'>
-                    <h2>Register</h2>
-                    <div className='container_3'>
-                        <div className='form'>
-                            <div className='step-header'>
+            <div className='w-full h-screen bg-[#E3EDEF] p-4 box-border flex items-center justify-center'>
+                <div className='w-[400px] text-center bg-[#F9FAFB] flex items-center flex-col px-[24px] py-[40px] rounded-2xl'>
+                    <h2 className='text-5xl font-medium'>ลงทะเบียน</h2>
+                    <div className='w-full my-10'>
+                        <div>
+                            <div className='flex justify-between items-center'>
                                 <p>
-                                    <span style={{ paddingRight: "1rem", fontWeight: "800", fontSize: "18px" }}>Step 1</span>
-                                    <span style={{ fontSize: "16px", color: "#637381" }}>Register shop</span>
+                                    <span className='pr-4 pl-1 text-2xl'>ขั้นตอนที่ 1</span>
+                                    <span className='text-2xl text-[#637381]'>ลงทะเบียนร้านค้า</span>
                                 </p>
-                                <div className={`status-shop-form ${status_form.shop ? "" : "active"}`}></div>
+                                <div className={`w-[20px] h-[20px] border-2 ${status_form.shop ? 'border-[#F8A01E]' : 'border-[#64D579]'}`} style={{ borderRadius: '44% 56% 48% 52% / 55% 40% 60% 45%' }}></div>
                             </div>
 
                             {status_form.shop &&
                                 <form onSubmit={submit_shop} style={{ width: "100%" }}>
-                                    <div className='input-box'>
-                                        <input type="text" id='shop_name'
+                                    <div className='relative w-full flex my-5'>
+                                        <input
+                                            type="text"
+                                            id='shop_name'
+                                            className='w-full text-3xl px-3 py-2 border border-[#E4E8EB] rounded-md outline-none box-border'
                                             onChange={(e) => set_Register_shop((value) => ({ ...value, Shop_name: e.target.value }))}
                                         />
-                                        <label htmlFor="shop_name">Shop name</label>
+                                        <label htmlFor="shop_name" className='absolute text-2xl text-[#637381] bg-[#F9FAFB] px-1 top-[-15px] left-[10px]'>ชื่อร้าน</label>
                                     </div>
 
-                                    <div className='input-box'>
-                                        <select name="" id="province"
+                                    <div className='relative w-full flex my-7'>
+                                        <select
+                                            name=""
+                                            id="province"
+                                            className='w-full text-3xl px-3 py-2 border border-[#E4E8EB] rounded-md outline-none box-border'
                                             onChange={Select_district}
                                         >
                                             <option></option>
@@ -222,11 +240,14 @@ function page() {
                                                 <option key={province.ProvinceID} value={province.ProvinceID}>{province.ProvinceNameTh}</option>
                                             ))}
                                         </select>
-                                        <label htmlFor="province">Province</label>
+                                        <label htmlFor="province" className='absolute text-2xl text-[#637381] bg-[#F9FAFB] px-1 top-[-15px] left-[10px]'>จังหวัด</label>
                                     </div>
 
-                                    <div className='input-box'>
-                                        <select name="" id="district"
+                                    <div className='relative w-full flex my-7'>
+                                        <select
+                                            name=""
+                                            id="district"
+                                            className='w-full text-3xl px-3 py-2 border border-[#E4E8EB] rounded-md outline-none box-border'
                                             onChange={Select_subdistrict}
                                         >
                                             <option></option>
@@ -234,11 +255,14 @@ function page() {
                                                 <option key={district.DistrictID} value={district.DistrictID}>{district.DistrictNameTh}</option>
                                             ))}
                                         </select>
-                                        <label htmlFor="district">District</label>
+                                        <label htmlFor="district" className='absolute text-2xl text-[#637381] bg-[#F9FAFB] px-1 top-[-15px] left-[10px]'>อำเภอ</label>
                                     </div>
 
-                                    <div className='input-box'>
-                                        <select name="" id="sub_district"
+                                    <div className='relative w-full flex my-7'>
+                                        <select
+                                            name=""
+                                            id="sub_district"
+                                            className='w-full text-3xl px-3 py-2 border border-[#E4E8EB] rounded-md outline-none box-border'
                                             onChange={(e) => set_Register_shop((value) => ({ ...value, SubDistrictID: Number(e.target.value) }))}
                                         >
                                             <option></option>
@@ -246,82 +270,117 @@ function page() {
                                                 <option key={subdistrict.SubDistrictID} value={subdistrict.SubDistrictID}>{subdistrict.SubDistrictNameTh}</option>
                                             ))}
                                         </select>
-                                        <label htmlFor="sub_district">Sub district</label>
+                                        <label htmlFor="sub_district" className='absolute text-2xl text-[#637381] bg-[#F9FAFB] px-1 top-[-15px] left-[10px]'>ตำบล</label>
                                     </div>
 
-                                    <div className='input-box'>
-                                        <input type="text" id='address'
+                                    <div className='relative w-full flex my-7'>
+                                        <input
+                                            type="text"
+                                            id='address'
+                                            className='w-full text-3xl px-3 py-2 border border-[#E4E8EB] rounded-md outline-none box-border'
                                             onChange={(e) => set_Register_shop((value) => ({ ...value, Shop_address: e.target.value }))}
                                         />
-                                        <label htmlFor="address">Address</label>
+                                        <label htmlFor="address" className='absolute text-2xl text-[#637381] bg-[#F9FAFB] px-1 top-[-15px] left-[10px]'>ที่อยู่</label>
                                     </div>
 
-                                    <div className='input-box' style={{ marginBottom: '0' }}>
-                                        <input type="submit" value="Next step" style={{ fontWeight: "600", cursor: 'pointer' }} />
+                                    <div className='relative w-full flex my-7' style={{ marginBottom: '0' }}>
+                                        <input
+                                            type="submit"
+                                            value="ต่อไป"
+                                            className='w-full text-3xl text-[#FBFCFC] py-3 rounded-md outline-none box-border cursor-pointer font-semibold bg-[#1C252E]'
+                                        />
                                     </div>
                                 </form>
                             }
 
                         </div>
-                        <hr />
-                        <div className='form'>
-                            <div className='step-header'>
+                        <hr className='border-none h-[1px] bg-[#808080] my-4' />
+                        <div>
+                            <div className='flex justify-between items-center'>
                                 <p>
-                                    <span style={{ paddingRight: "1rem", fontWeight: "800", fontSize: "18px" }}>Step 2</span>
-                                    <span style={{ fontSize: "16px", color: "#637381" }}>Register owner</span>
+                                    <span className='pr-4 pl-1 text-2xl'>ขั้นตอนที่ 2</span>
+                                    <span className='text-2xl text-[#637381]'>ลงทะเบียนผู้จัดการร้าน</span>
                                 </p>
-                                <div className={`status-owner-form ${status_form.owner ? "" : "active"}`}></div>
+                                <div className={`w-[20px] h-[20px] border-2 ${status_form.owner ? '' : 'border-[#F8A01E]'} ${status_form.owner2 ? 'border-[#64D579]' : ''} `} style={{ borderRadius: '44% 56% 48% 52% / 55% 40% 60% 45%' }}></div>
                             </div>
 
                             {status_form.owner &&
                                 <form onSubmit={submit_owner} style={{ width: "100%" }}>
-                                    <div className='input-box'>
-                                        <input type="text" value={`${shop_code}`} id='shop_code' />
-                                        <label htmlFor="shop_code">Shop code</label>
+                                    <div className='relative w-full flex my-5'>
+                                        <input type="text" value={`${shop_code}`} id='shop_code' className='w-full text-3xl px-3 py-2 border border-[#E4E8EB] rounded-md outline-none box-border' />
+                                        <label htmlFor="shop_code" className='absolute text-2xl text-[#637381] bg-[#F9FAFB] px-1 top-[-15px] left-[10px]'>รหัสร้าน</label>
                                     </div>
 
-                                    <div className='input-box'>
-                                        <input type="text" id='first_name'
+                                    <div className='relative w-full flex my-5'>
+                                        <input
+                                            type="text"
+                                            id='first_name'
+                                            className='w-full text-3xl px-3 py-2 border border-[#E4E8EB] rounded-md outline-none box-border peer hover:border-black focus:border-2 focus:border-[#1877F2]'
                                             onChange={(e) => set_Register_owner((value) => ({ ...value, Owner_first_name: e.target.value }))}
                                         />
-                                        <label htmlFor="first_name">First name</label>
+                                        <label htmlFor="first_name" className='absolute text-2xl text-[#637381] bg-[#F9FAFB] px-1 top-[-15px] left-[10px] peer-hover:text-black peer-focus:text-[#1877F2]'>ชื่อ</label>
                                     </div>
 
-                                    <div className='input-box'>
-                                        <input type="text" id='last_name'
+                                    <div className='relative w-full flex my-5'>
+                                        <input
+                                            type="text"
+                                            id='last_name'
+                                            className='w-full text-3xl px-3 py-2 border border-[#E4E8EB] rounded-md outline-none box-border peer hover:border-black focus:border-2 focus:border-[#1877F2]'
                                             onChange={(e) => set_Register_owner((value) => ({ ...value, Owner_last_name: e.target.value }))}
                                         />
-                                        <label htmlFor="last_name">Last name</label>
+                                        <label htmlFor="last_name" className='absolute text-2xl text-[#637381] bg-[#F9FAFB] px-1 top-[-15px] left-[10px] peer-hover:text-black peer-focus:border-[#1877F2]'>นามสกุล</label>
                                     </div>
 
-                                    <div className='input-box'>
-                                        <input type="text" id='username'
+                                    <div className='relative w-full flex my-5'>
+                                        <input
+                                            type="text"
+                                            id='username'
+                                            className='w-full text-3xl px-3 py-2 border border-[#E4E8EB] rounded-md outline-none box-border peer hover:border-black focus:border-2 focus:border-[#1877F2]'
                                             onChange={(e) => set_Register_owner((value) => ({ ...value, Owner_username: e.target.value }))}
                                         />
-                                        <label htmlFor="username">Username</label>
+                                        <label htmlFor="username" className='absolute text-2xl text-[#637381] bg-[#F9FAFB] px-1 top-[-15px] left-[10px] peer-hover:text-black peer-focus:border-black'>บัญชีผู้ใช้งาน</label>
                                     </div>
 
-                                    <div className='input-box'>
-                                        <input type="password" id='password'
+                                    <div className='relative w-full flex my-5'>
+                                        <input
+                                            type="password"
+                                            id='password'
+                                            className={`w-full text-3xl px-3 py-2 border border-[#E4E8EB] rounded-md outline-none box-border peer hover:border-black focus:border-2 focus:border-[#1877F2] ${status_form.confirm_password ? '' : 'border-[#FD6262]'}`}
                                             onChange={(e) => set_Register_owner((value) => ({ ...value, Owner_password: e.target.value }))}
                                         />
-                                        <label htmlFor="password">Password</label>
+                                        <label htmlFor="password" className='absolute text-2xl text-[#637381] bg-[#F9FAFB] px-1 top-[-15px] left-[10px] peer-hover:text-black peer-focus:text-[#1877F2]'>รหัสผ่าน</label>
                                     </div>
 
-                                    <div className='input-box'>
-                                        <input type="password" id='confirm_password'
+                                    <div className='relative w-full flex my-5'>
+                                        <input
+                                            type="password"
+                                            id='confirm_password'
+                                            className={`w-full text-3xl px-3 py-2 border border-[#E4E8EB] rounded-md outline-none box-border peer hover:border-black focus:border-2 focus:border-[#1877F2] ${status_form.confirm_password ? '' : 'border-[#FD6262]'}`}
                                             onChange={(e) => set_Confirm_password(e.target.value)}
                                         />
-                                        <label htmlFor="confirm_password">Confirm Password</label>
+                                        <label htmlFor="confirm_password" className='absolute text-2xl text-[#637381] bg-[#F9FAFB] px-1 top-[-15px] left-[10px] peer-hover:text-black peer-focus:text-[#1877F2]'>ยืนยันรหัสผ่าน</label>
                                     </div>
 
-                                    <div className='input-box' style={{ marginBottom: '0' }}>
-                                        <input type="submit" style={{ fontWeight: "600", cursor: 'pointer' }} />
+                                    <div className='relative w-full flex my-5' style={{ marginBottom: '0' }}>
+                                        <input
+                                            type="submit"
+                                            value='ลงทะเบียน'
+                                            className='w-full text-3xl text-[#FBFCFC] py-3 rounded-md outline-none box-border cursor-pointer font-semibold bg-[#1C252E]'
+                                        />
                                     </div>
                                 </form>
                             }
                         </div>
                     </div>
+                    {status_form.owner2 &&
+                        <div>
+                            <svg aria-hidden="true" className="inline w-8 h-8 text-gray-200 animate-spin dark:text-gray-600 fill-blue-600" viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z" fill="currentColor" />
+                                <path d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0491C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z" fill="currentFill" />
+                            </svg>
+                            <span className="sr-only">Loading...</span>
+                        </div>
+                    }
                 </div >
             </div >
         </>
