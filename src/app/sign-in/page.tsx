@@ -1,5 +1,4 @@
 "use client"
-import './page.scss'
 import { signIn } from "next-auth/react"
 import { useRouter, useSearchParams } from "next/navigation"
 
@@ -115,71 +114,37 @@ function page() {
 
     return (
         <>
-            <div className='container_1'>
-                <div className='container_2'>
+            <div className='w-full h-screen bg-[#E3EDEF] p-4 box-border flex items-center justify-center'>
+                <div className='w-[350px] text-center bg-[#F9FAFB] px-[24px] py-[40px] rounded-2xl'>
                     <form onSubmit={submit_signIn}>
-                        <h2>Sign in</h2>
-                        <p style={{ color: '#637381', fontSize: '14px' }}>Don't have an account? <a href="/register" style={{ color: "#1877F2", fontWeight: '600' }}>Get started</a></p>
+                        <h2 className='text-5xl font-medium'>เข้าสู่ระบบ</h2>
+                        <p className='text-[#637381] text-2xl'>หากยังไม่มีบัญชีใช้งาน ? <a href="/register" className='text-[#1877F2] hover:underline'>ลงทะเบียน</a></p>
 
-                        <div className='container_3'>
-                            <div className='input-box'>
-                                <input id='shop_code' type="text" ref={shop_code} className={`shop_code ${warning.shop_code ? 'active' : ''}`} />
-                                <label htmlFor="shop_code">Shop code</label>
+                        <div className='flex flex-col items-end'>
+                            <div className='w-full relative my-3'>
+                                <input id='shop_code' type="text" ref={shop_code} className={`w-full text-3xl px-3 py-2 border rounded-md outline-none box-border focus:border-[#1877F2] focus:border-2 peer ${warning.shop_code ? 'border-[#FD6262]' : 'border-[#E4E8EB]'}`} />
+                                <label className={`absolute text-2xl bg-[#F9FAFB] px-1 top-[-15px] left-[10px] peer-focus:text-[#1877F2] ${warning.shop_code ? 'text-[#FD6262] peer-hover:text-[#811211]' : 'text-[#637381] peer-hover:text-black'}`} htmlFor="shop_code">รหัสร้าน</label>
                             </div>
 
-                            <div className='input-box'>
-                                <input id='username' type="text" ref={username} className={`username ${warning.username ? 'active' : ''}`} />
-                                <label htmlFor="username">Username</label>
+                            <div className='w-full relative my-3'>
+                                <input id='username' type="text" ref={username} className={`w-full text-3xl px-3 py-2 border rounded-md outline-none box-border focus:border-[#1877F2] focus:border-2 peer ${warning.username ? 'border-[#FD6262]' : 'border-[#E4E8EB]'}`} />
+                                <label className={`absolute text-2xl bg-[#F9FAFB] px-1 top-[-15px] left-[10px] peer-focus:text-[#1877F2] ${warning.username ? 'text-[#FD6262] peer-hover:text-[#811211]' : 'text-[#637381] peer-hover:text-black'}`} htmlFor="username">ผู้ใช้งาน</label>
                             </div>
 
-                            <div className='input-box'>
-                                <input id='password' type="password" ref={password} className={`password ${warning.password ? 'active' : ''}`} />
-                                <label htmlFor="password">Password</label>
+                            <div className='w-full relative my-3'>
+                                <input id='password' type="password" ref={password} className={`w-full text-3xl px-3 py-2 border rounded-md outline-none box-border focus:border-[#1877F2] focus:border-2 peer ${warning.password ? 'border-[#FD6262]' : 'border-[#E4E8EB]'}`} />
+                                <label className={`absolute text-2xl bg-[#F9FAFB] px-1 top-[-15px] left-[10px] peer-focus:text-[#1877F2] ${warning.password ? 'text-[#FD6262] peer-hover:text-[#811211]' : 'text-[#637381] peer-hover:text-black'}`} htmlFor="password">รหัสผ่าน</label>
                             </div>
 
-                            <p><a href="#" style={{ color: "#1C252E" }}>For got password?</a></p>
+                            <p><a href="#" className='text-2xl text-[#1C252E]'>ลืมรหัสผ่าน?</a></p>
 
-                            <div className='input-box'>
-                                <input type="submit" value='Sign in' style={{ fontWeight: "600", cursor: 'pointer' }} />
+                            <div className='w-full relative my-3'>
+                                <input type="submit" value='เข้าสู่ระบบ' className='font-bold cursor-pointer w-full rounded-md outline-none text-[#FBFCFC] bg-[#1C252E]' />
                             </div>
                         </div>
                     </form>
                 </div>
             </div>
-            {/* <h2>Sign-in</h2>
-            <form onSubmit={submit_signIn}>
-                <label htmlFor="shop_code">Shop code</label>
-                <input
-                    type="text"
-                    id="shop_code"
-                    ref={shop_code}
-
-                    className={`shop_code ${warning.shop_code ? 'active' : ''}`}
-                /><br />
-                {warning.shop_code_text_warning_1 && <p>no data shop in database.</p>}
-
-                <label htmlFor="username">Username</label>
-                <input
-                    type="text"
-                    id="username"
-                    ref={username}
-
-                    className={`username ${warning.username ? 'active' : ''}`}
-                /><br />
-                {warning.username_text_warning_1 && <p>username incorrect.</p>}
-
-                <label htmlFor="password">Password</label>
-                <input
-                    type="password"
-                    id="password"
-                    ref={password}
-
-                    className={`password ${warning.password ? 'active' : ''}`}
-                /><br />
-                {warning.password_text_warning_1 && <p>password incorrect.</p>}
-
-                <input type="submit" />
-            </form> */}
         </>
     )
 }
