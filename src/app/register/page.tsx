@@ -84,7 +84,7 @@ function page() {
 
         };
 
-        // fetchData()
+        fetchData()
     }, []);
 
     const Select_district = async (e: any) => {
@@ -149,7 +149,7 @@ function page() {
     const submit_owner = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
-        if (confirm_password != register_owner.Owner_username) {
+        if (confirm_password != register_owner.Owner_password) {
             set_Status_form((value) => ({ ...value, confirm_password: true }))
 
         } else {
@@ -222,17 +222,17 @@ function page() {
                                         <input
                                             type="text"
                                             id='shop_name'
-                                            className='w-full text-3xl px-3 py-2 border border-[#E4E8EB] rounded-md outline-none box-border'
+                                            className='w-full text-3xl px-3 py-2 border border-[#E4E8EB] rounded-md outline-none box-border peer hover:border-black focus:border-2 focus:border-[#1877F2]'
                                             onChange={(e) => set_Register_shop((value) => ({ ...value, Shop_name: e.target.value }))}
                                         />
-                                        <label htmlFor="shop_name" className='absolute text-2xl text-[#637381] bg-[#F9FAFB] px-1 top-[-15px] left-[10px]'>ชื่อร้าน</label>
+                                        <label htmlFor="shop_name" className='absolute text-2xl text-[#637381] bg-[#F9FAFB] px-1 top-[-15px] left-[10px] peer-hover:text-black peer-focus:text-[#1877F2]'>ชื่อร้าน</label>
                                     </div>
 
                                     <div className='relative w-full flex my-7'>
                                         <select
                                             name=""
                                             id="province"
-                                            className='w-full text-3xl px-3 py-2 border border-[#E4E8EB] rounded-md outline-none box-border'
+                                            className='w-full text-3xl px-3 py-2 border border-[#E4E8EB] rounded-md outline-none box-border peer hover:border-black focus:border-2 focus:border-[#1877F2]'
                                             onChange={Select_district}
                                         >
                                             <option></option>
@@ -240,14 +240,14 @@ function page() {
                                                 <option key={province.ProvinceID} value={province.ProvinceID}>{province.ProvinceNameTh}</option>
                                             ))}
                                         </select>
-                                        <label htmlFor="province" className='absolute text-2xl text-[#637381] bg-[#F9FAFB] px-1 top-[-15px] left-[10px]'>จังหวัด</label>
+                                        <label htmlFor="province" className='absolute text-2xl text-[#637381] bg-[#F9FAFB] px-1 top-[-15px] left-[10px] peer-hover:text-black peer-focus:text-[#1877F2]'>จังหวัด</label>
                                     </div>
 
                                     <div className='relative w-full flex my-7'>
                                         <select
                                             name=""
                                             id="district"
-                                            className='w-full text-3xl px-3 py-2 border border-[#E4E8EB] rounded-md outline-none box-border'
+                                            className='w-full text-3xl px-3 py-2 border border-[#E4E8EB] rounded-md outline-none box-border peer hover:border-black focus:border-2 focus:border-[#1877F2]'
                                             onChange={Select_subdistrict}
                                         >
                                             <option></option>
@@ -255,14 +255,14 @@ function page() {
                                                 <option key={district.DistrictID} value={district.DistrictID}>{district.DistrictNameTh}</option>
                                             ))}
                                         </select>
-                                        <label htmlFor="district" className='absolute text-2xl text-[#637381] bg-[#F9FAFB] px-1 top-[-15px] left-[10px]'>อำเภอ</label>
+                                        <label htmlFor="district" className='absolute text-2xl text-[#637381] bg-[#F9FAFB] px-1 top-[-15px] left-[10px] peer-hover:text-black peer-focus:text-[#1877F2]'>อำเภอ</label>
                                     </div>
 
                                     <div className='relative w-full flex my-7'>
                                         <select
                                             name=""
                                             id="sub_district"
-                                            className='w-full text-3xl px-3 py-2 border border-[#E4E8EB] rounded-md outline-none box-border'
+                                            className='w-full text-3xl px-3 py-2 border border-[#E4E8EB] rounded-md outline-none box-border peer hover:border-black focus:border-2 focus:border-[#1877F2]'
                                             onChange={(e) => set_Register_shop((value) => ({ ...value, SubDistrictID: Number(e.target.value) }))}
                                         >
                                             <option></option>
@@ -270,17 +270,17 @@ function page() {
                                                 <option key={subdistrict.SubDistrictID} value={subdistrict.SubDistrictID}>{subdistrict.SubDistrictNameTh}</option>
                                             ))}
                                         </select>
-                                        <label htmlFor="sub_district" className='absolute text-2xl text-[#637381] bg-[#F9FAFB] px-1 top-[-15px] left-[10px]'>ตำบล</label>
+                                        <label htmlFor="sub_district" className='absolute text-2xl text-[#637381] bg-[#F9FAFB] px-1 top-[-15px] left-[10px] peer-hover:text-black peer-focus:text-[#1877F2]'>ตำบล</label>
                                     </div>
 
                                     <div className='relative w-full flex my-7'>
                                         <input
                                             type="text"
                                             id='address'
-                                            className='w-full text-3xl px-3 py-2 border border-[#E4E8EB] rounded-md outline-none box-border'
+                                            className='w-full text-3xl px-3 py-2 border border-[#E4E8EB] rounded-md outline-none box-border peer hover:border-black focus:border-2 focus:border-[#1877F2]'
                                             onChange={(e) => set_Register_shop((value) => ({ ...value, Shop_address: e.target.value }))}
                                         />
-                                        <label htmlFor="address" className='absolute text-2xl text-[#637381] bg-[#F9FAFB] px-1 top-[-15px] left-[10px]'>ที่อยู่</label>
+                                        <label htmlFor="address" className='absolute text-2xl text-[#637381] bg-[#F9FAFB] px-1 top-[-15px] left-[10px] peer-hover:text-black peer-focus:text-[#1877F2]'>ที่อยู่</label>
                                     </div>
 
                                     <div className='relative w-full flex my-7' style={{ marginBottom: '0' }}>
@@ -301,13 +301,13 @@ function page() {
                                     <span className='pr-4 pl-1 text-2xl'>ขั้นตอนที่ 2</span>
                                     <span className='text-2xl text-[#637381]'>ลงทะเบียนผู้จัดการร้าน</span>
                                 </p>
-                                <div className={`w-[20px] h-[20px] border-2 ${status_form.owner ? '' : 'border-[#F8A01E]'} ${status_form.owner2 ? 'border-[#64D579]' : ''} `} style={{ borderRadius: '44% 56% 48% 52% / 55% 40% 60% 45%' }}></div>
+                                <div className={`w-[20px] h-[20px] border-2 ${status_form.owner ? '' : 'border-[#F8A01E]'} ${status_form.owner2 ? 'border-[#64D579]' : 'border-[#F8A01E]'} `} style={{ borderRadius: '44% 56% 48% 52% / 55% 40% 60% 45%' }}></div>
                             </div>
 
                             {status_form.owner &&
                                 <form onSubmit={submit_owner} style={{ width: "100%" }}>
                                     <div className='relative w-full flex my-5'>
-                                        <input type="text" value={`${shop_code}`} id='shop_code' className='w-full text-3xl px-3 py-2 border border-[#E4E8EB] rounded-md outline-none box-border' />
+                                        <input type="text" value={`${shop_code}`} readOnly id='shop_code' className='w-full text-3xl px-3 py-2 border border-[#E4E8EB] rounded-md outline-none box-border' />
                                         <label htmlFor="shop_code" className='absolute text-2xl text-[#637381] bg-[#F9FAFB] px-1 top-[-15px] left-[10px]'>รหัสร้าน</label>
                                     </div>
 
